@@ -10,10 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.io.IOException;
-/*import com.google.gson.Gson;
-import java.io.BufferedReader;
-import java.lang.StringBuilder;
-import java.io.InputStream;*/
+import com.jayway.jsonpath.JsonPath;
 
 public class PetRegistry {
 	private String domain = "https://petstore.swagger.io/v2";
@@ -23,23 +20,10 @@ public class PetRegistry {
             .version(HttpClient.Version.HTTP_2)
             .build();
 
-	public PetRegistry() {
-		
-	}
 	
-	public static void main(String[] args) throws IOException, InterruptedException {
-		PetRegistry pets = new PetRegistry();
-		pets.sendPOST();
-		pets.sendGET();
-		pets.sendPOSTUpdate();
-		pets.sendGET();
-		pets.sendDELETE();
-		pets.sendGET();
-	}
-	
-	public HttpResponse<String> sendPOST() throws IOException, InterruptedException {
+	public HttpResponse<String> sendPost() throws IOException, InterruptedException {
         String body = "{ \"id\": 3336, \"category\": { \"id\": 0, \"name\": \"string\" }, \"name\": \"doggie\", \"photoUrls\": [ \"string\" ], \"tags\": [ { \"id\": 0, \"name\": \"string\" } ], \"status\": \"available\"}";
-
+        
 		// add json header
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(body))
@@ -48,11 +32,11 @@ public class PetRegistry {
                 .header("Content-Type", "application/json")
                 .build();
 
-        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());        
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());   
         return response;
     }
 	
-	public HttpResponse<String> sendPOSTUpdate() throws IOException, InterruptedException {
+	public HttpResponse<String> sendPostUpdate() throws IOException, InterruptedException {
 
         String updatedName = "benji";
         String updatedStatus = "unavailable";
@@ -70,7 +54,7 @@ public class PetRegistry {
 
     }
 	
-	public HttpResponse<String> sendGET() throws IOException, InterruptedException {
+	public HttpResponse<String> sendGet() throws IOException, InterruptedException {
 
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
@@ -80,14 +64,13 @@ public class PetRegistry {
 
 
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-        // print response headers
         HttpHeaders headers = response.headers();
-        headers.map().forEach((k, v) -> System.out.println(k + ":" + v));
+        //headers.map().forEach((k, v) -> System.out.println(k + ":" + v));
         return response;
 
     }
 	
-	public HttpResponse<String> sendDELETE() throws IOException, InterruptedException {
+	public HttpResponse<String> sendDelete() throws IOException, InterruptedException {
 
         HttpRequest request = HttpRequest.newBuilder()
                 .DELETE()
@@ -96,10 +79,9 @@ public class PetRegistry {
                 .build();
 
 
-        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-        // print response headers
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());        
         HttpHeaders headers = response.headers();
-        headers.map().forEach((k, v) -> System.out.println(k + ":" + v));
+        //headers.map().forEach((k, v) -> System.out.println(k + ":" + v));
         return response;
 
     }

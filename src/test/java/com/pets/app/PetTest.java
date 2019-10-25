@@ -1,48 +1,51 @@
 package com.pets.app;
 
 import static org.junit.Assert.*;
-
 import org.junit.Test;
-import static org.junit.Assert.assertThat;
-
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
 import com.pets.app.PetRegistry;
 import java.net.http.HttpResponse;
 import java.io.IOException;
+import com.jayway.jsonpath.JsonPath;
 
 
 /**
- * Unit test for simple App.
+ * Test assertions on REST calls to https://petstore.swagger.io/
  */
-public class AppTest 
+public class PetTest 
 {
 	String initialPost = "{\"id\":3336,\"category\":{\"id\":0,\"name\":\"string\"},\"name\":\"doggie\",\"photoUrls\":[\"string\"],\"tags\":[{\"id\":0,\"name\":\"string\"}],\"status\":\"available\"}";
 	String updatedPost = "{\"id\":3336,\"category\":{\"id\":0,\"name\":\"string\"},\"name\":\"benji\",\"photoUrls\":[\"string\"],\"tags\":[{\"id\":0,\"name\":\"string\"}],\"status\":\"unavailable\"}";
 
 	PetRegistry pets;
 	HttpResponse<String> response;
+	String responseName, targetName;
     
-    @Test
-    public void shouldAnswerWithTrue() throws IOException, InterruptedException {
-            
+	@Test
+    public void shouldPostNewPetSuccessfully() throws IOException, InterruptedException {            
     	pets = new PetRegistry();   
-    	response = pets.sendPOST();
+    	response = pets.sendPost();
+    	responseName = JsonPath.read(response.body(), "$.name");
+    	targetName = JsonPath.read(initialPost, "$.name");        
     	assertEquals(response.statusCode(),200);
     	assertEquals(response.body(),initialPost); 
-    	response = pets.sendGET();
+    	assertEquals(responseName,targetName);
+    	response = pets.sendGet();
+    	responseName = JsonPath.read(response.body(), "$.name");
+    	targetName = JsonPath.read(initialPost, "$.name");        
     	assertEquals(response.statusCode(),200);
     	assertEquals(response.body(),initialPost); 
-    	response = pets.sendPOSTUpdate();
+    	assertEquals(responseName,targetName);
+    	response = pets.sendPostUpdate();    	     
     	assertEquals(response.statusCode(),200);
-    	response = pets.sendGET();
+    	response = pets.sendGet();
+    	responseName = JsonPath.read(response.body(), "$.name");
+    	targetName = JsonPath.read(updatedPost, "$.name");   
     	assertEquals(response.statusCode(),200);
     	assertEquals(response.body(),updatedPost); 
-    	response = pets.sendDELETE();
+    	assertEquals(responseName,targetName);
+    	response = pets.sendDelete();
     	assertEquals(response.statusCode(),200);
-    	response = pets.sendGET();
+    	response = pets.sendGet();
     	assertEquals(response.statusCode(),404);
     }
 }
