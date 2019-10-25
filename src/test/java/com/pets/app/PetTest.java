@@ -63,32 +63,4 @@ public class PetTest
 		assertEquals(getResponse3.statusCode(),404);
 	}
 	
-		
-		
-    	/*pets = new PetRegistry();   
-    	response = pets.sendPost();
-    	responseName = JsonPath.read(response.body(), "$.name");
-    	targetName = JsonPath.read(initialPost, "$.name");        
-    	assertEquals(response.statusCode(),200);
-    	assertEquals(response.body(),initialPost); 
-    	assertEquals(responseName,targetName);
-    	response = pets.sendGet();
-    	responseName = JsonPath.read(response.body(), "$.name");
-    	targetName = JsonPath.read(initialPost, "$.name");        
-    	assertEquals(response.statusCode(),200);
-    	assertEquals(response.body(),initialPost); 
-    	assertEquals(responseName,targetName);
-    	response = pets.sendPostUpdate();    	     
-    	assertEquals(response.statusCode(),200);
-    	response = pets.sendGet();
-    	responseName = JsonPath.read(response.body(), "$.name");
-    	targetName = JsonPath.read(updatedPost, "$.name");   
-    	assertEquals(response.statusCode(),200);
-    	assertEquals(response.body(),updatedPost); 
-    	assertEquals(responseName,targetName);
-    	response = pets.sendDelete();
-    	assertEquals(response.statusCode(),200);
-    	response = pets.sendGet();
-    	assertEquals(response.statusCode(),404);
-    }*/
 }
